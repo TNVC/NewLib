@@ -43,4 +43,9 @@ char *newstrcat(char *target, const char *source);
 /// @note n don`t include '\\0'
 char *newstrncat(char *target, const char *source, int n);
 
+/// Copy string in heap
+/// @param [in] str Source string
+/// @return Address in heap of copy of source string
+char *newstrdup(const char *source);
+
 #endif

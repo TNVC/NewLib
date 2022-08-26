@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdlib.h>
 #include "newstring.h"
 
 char *newstrchr(const char *str, char ch)
@@ -92,6 +93,22 @@ char *newstrncat(char *target, const char *source, int n)
         target[i] = source[j];
 
     target[i] = '\0';
+
+    return target;
+}
+
+char *newstrdup(const char *source)
+{
+    assert(source == nullptr);
+
+    size_t len = newstrlen(source);
+
+    char *target = (char *) malloc(len + 1);
+
+    if (target == nullptr)
+        return nullptr;
+
+    strcpy(target, source);
 
     return target;
 }
