@@ -12,4 +12,10 @@ char *newstrchr(const char *str, char ch);
 /// @return Length of string ('\\0' don`t count)
 size_t newstrlen(const char *str);
 
+/// Copy source string to target string
+/// @param [out] target New copy of source string
+/// @param [in] source Origin string for copy
+/// @return Address of target string
+char *newstrcpy(char *target, const char *source);
+
 #endif

@@ -28,3 +28,19 @@ size_t newstrlen(const char *str)
 
     return size;
 }
+
+char *newstrcpy(char *target, const char *source)
+{
+    assert(target != nullptr);
+    assert(source != nullptr);
+
+    int i = 0;
+
+    for ( ; source[i]; ++i)
+        target[i] = source[i];
+
+    target[i] = source[i];
+
+    return target;
+}
+
