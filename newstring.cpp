@@ -16,3 +16,15 @@ char *newstrchr(const char *str, char ch)
 
     return nullptr;
 }
+
+size_t newstrlen(const char *str)
+{
+    assert(str != nullptr);
+
+    size_t size = 0;
+
+    for (const char *ch = str; *ch; ++ch)
+        ++size;
+
+    return size;
+}
