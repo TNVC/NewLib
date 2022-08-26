@@ -32,10 +32,13 @@ int main()
 
     char str0[4] = "Str";
     char str1[10] = "Qwerty";
+    //printf("str0 = %s, str1 = %s, fourth = %s\n", newstrncpy(str0, str1, 4), str1, fourth);
+
     printf("str0 = %s, str1 = %s\n", str0, str1);
-    printf("str0 = %s, str1 = %s, fourth = %s\n", newstrncpy(str0, str1, 4), str1, fourth);
 
+    newstrcat(str1, str0);
 
+    printf("str0 = %s, str1 = %s\n", str0, str1);
 
     return 0;
 }

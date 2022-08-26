@@ -27,4 +27,10 @@ char *newstrcpy(char *target, const char *source);
 /// @return Address of target string
 char *newstrncpy(char *target, const char *source, int n);
 
+/// Add source to end to target
+/// @param [in/out] target First string in concatenation
+/// @param [in] source Second string in concatenation
+/// @return Address of target
+char *newstrcat(char *target, const char *source);
+
 #endif
