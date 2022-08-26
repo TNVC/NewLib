@@ -25,14 +25,13 @@ char *newfgets(char *str, int n, FILE *stream)
     int ch = 0;
     int  i = 0;
 
-    for ( ; ch != '\n' && ch != EOF && i < n - 1; ++i)
+    for ( ; ch != '\n' && i < n - 1; ++i)
     {
-        ch = getc(stream);
+        if((ch = getc(stream)) == EOF)
+            return nullptr;
+
         str[i] = (char) ch;
     }
-
-    if (ch == EOF)
-        return nullptr;
 
     str[i] = '\0';
 

@@ -15,16 +15,16 @@ size_t newstrlen(const char *str);
 /// Copy source string to target string
 /// @param [out] target New copy of source string
 /// @param [in] source Origin string for copy
-/// @return Address of target string
+/// @return Address of copy string
 char *newstrcpy(char *target, const char *source);
 
 /// Copy source string to target string
-/// @details
+/// @details Copy source while don`t find '\\0' or while don`t copy n - 1 chars
 ///
 /// @param [out] target New copy of source string
 /// @param [in] source Origin string for copy
 /// @param [in] n Count of max char to copy
-/// @return Address of target string
+/// @return Address of copy string
 char *newstrncpy(char *target, const char *source, int n);
 
 /// Add source to end to target

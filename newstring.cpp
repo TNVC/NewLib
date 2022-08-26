@@ -56,7 +56,7 @@ char *newstrncpy(char *target, const char *source, int n)
         target[i] = source[i];
 
     target[i]     = source[i];
-    target[n - 1] = '\0';
+    target[n - 1] =      '\0';
 
     return target;
 }
@@ -83,6 +83,7 @@ char *newstrncat(char *target, const char *source, int n)
 {
     assert(target != nullptr);
     assert(source != nullptr);
+    assert(n > 0);
 
     int i = -1;
     while (target[++i])
@@ -99,7 +100,7 @@ char *newstrncat(char *target, const char *source, int n)
 
 char *newstrdup(const char *source)
 {
-    assert(source == nullptr);
+    assert(source != nullptr);
 
     size_t len = newstrlen(source);
 
@@ -108,7 +109,7 @@ char *newstrdup(const char *source)
     if (target == nullptr)
         return nullptr;
 
-    strcpy(target, source);
+    newstrcpy(target, source);
 
     return target;
 }
