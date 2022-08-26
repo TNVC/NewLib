@@ -31,12 +31,14 @@ int main()
     printf("third = %s, fourth = %s\n", newstrncpy(third, fourth, 10), fourth);
 
     char str0[4] = "Str";
-    char str1[10] = "Qwerty";
+    char str1[9] = "Qw";
     //printf("str0 = %s, str1 = %s, fourth = %s\n", newstrncpy(str0, str1, 4), str1, fourth);
 
     printf("str0 = %s, str1 = %s\n", str0, str1);
 
-    newstrcat(str1, str0);
+    showArray(str1, 9);
+    newstrncat(str1, str0, 6);
+    showArray(str1, 9);
 
     printf("str0 = %s, str1 = %s\n", str0, str1);
 

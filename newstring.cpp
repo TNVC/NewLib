@@ -77,3 +77,21 @@ char *newstrcat(char *target, const char *source)
 
     return target;
 }
+
+char *newstrncat(char *target, const char *source, int n)
+{
+    assert(target != nullptr);
+    assert(source != nullptr);
+
+    int i = -1;
+    while (target[++i])
+        continue;
+
+    int j = 0;
+    for ( ; source[j] && j < n; ++j, ++i)
+        target[i] = source[j];
+
+    target[i] = '\0';
+
+    return target;
+}

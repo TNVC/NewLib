@@ -33,4 +33,14 @@ char *newstrncpy(char *target, const char *source, int n);
 /// @return Address of target
 char *newstrcat(char *target, const char *source);
 
+/// Add source to end to target
+/// @details
+///
+/// @param [in/out] target First string in concatenation
+/// @param [in] source Second string in concatenation
+/// @param [in] n Count of free space in target
+/// @return Address of target
+/// @note n don`t include '\\0'
+char *newstrncat(char *target, const char *source, int n);
+
 #endif
