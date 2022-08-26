@@ -18,4 +18,13 @@ size_t newstrlen(const char *str);
 /// @return Address of target string
 char *newstrcpy(char *target, const char *source);
 
+/// Copy source string to target string
+/// @details
+///
+/// @param [out] target New copy of source string
+/// @param [in] source Origin string for copy
+/// @param [in] n Count of max char to copy
+/// @return Address of target string
+char *newstrncpy(char *target, const char *source, int n);
+
 #endif

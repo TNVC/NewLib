@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include "newstring.h"
 
 char *newstrchr(const char *str, char ch)
@@ -40,6 +41,22 @@ char *newstrcpy(char *target, const char *source)
         target[i] = source[i];
 
     target[i] = source[i];
+
+    return target;
+}
+
+char *newstrncpy(char *target, const char *source, int n)
+{
+    assert(target != nullptr);
+    assert(source != nullptr);
+
+    int i = 0;
+
+    for ( ; source[i] && i < n - 1; ++i)
+        target[i] = source[i];
+
+    target[i]     = source[i];
+    target[n - 1] = '\0';
 
     return target;
 }

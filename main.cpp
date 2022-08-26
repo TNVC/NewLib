@@ -2,6 +2,8 @@
 #include "newstdio.h"
 #include "newstring.h"
 
+static void showArray(const char *array, int n);
+
 int main()
 {
     newputs("First line\nSecond line");
@@ -23,6 +25,28 @@ int main()
     printf("first = %s, second = %s\n", first, second);
     printf("first = %s, second = %s\n", first, newstrcpy(second, first));
 
+    char third [10] = "Third";
+    char fourth[10] = "Fourth";
+    printf("third = %s, fourth = %s\n", third, fourth);
+    printf("third = %s, fourth = %s\n", newstrncpy(third, fourth, 10), fourth);
+
+    char str0[4] = "Str";
+    char str1[10] = "Qwerty";
+    printf("str0 = %s, str1 = %s\n", str0, str1);
+    printf("str0 = %s, str1 = %s, fourth = %s\n", newstrncpy(str0, str1, 4), str1, fourth);
+
+
 
     return 0;
+}
+
+static void showArray(const char *array, int n)
+{
+    printf("%p: ", array);
+    for (int i = 0; i < n; ++i)
+        if (array[i] == '\0')
+            printf("%d:\\0 ", i);
+        else
+            printf("%d:%c ", i, array[i]);
+    putchar('\n');
 }
