@@ -42,16 +42,25 @@ int main()
 
     printf("str0 = %s, str1 = %s\n", str0, str1);
 
+    char buff[5] = "1234";//"123456789";
+
+
+    while (newfgets(buff, 5, stdin) != nullptr)
+        {
+        //showArray(buff, 5);
+        printf("%s", buff);
+        }
+
     return 0;
 }
 
 static void showArray(const char *array, int n)
 {
-    printf("%p: ", array);
+    putchar('\n');
     for (int i = 0; i < n; ++i)
         if (array[i] == '\0')
             printf("%d:\\0 ", i);
         else
-            printf("%d:%c ", i, array[i]);
+            printf("%d:'%c' ", i, array[i]);
     putchar('\n');
 }
