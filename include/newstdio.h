@@ -23,7 +23,7 @@ char *newfgets(char *str, int n, FILE *stream);
 /// @param [out] strPointer Pointer to read string
 /// @param [out] n Pointer to length of read string
 /// @param [in] stream Chars input stream
-/// @return Size of read string or EOF if was error
+/// @return Size of read string or 0 if was error
 /// @note Read '\\0' too
 /// @note Don`t forget free() return address
 size_t newgetline(char **strPointer, size_t *n, FILE *stream);

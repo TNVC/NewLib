@@ -67,7 +67,7 @@ size_t newgetline(char **strPointer, size_t *n, FILE *stream)
 
             *strPointer = (char *) realloc(*strPointer, *n);
 
-            return EOF;
+            return 0;
         }
 
         (*strPointer)[*n] = (char) ch;

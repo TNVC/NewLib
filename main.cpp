@@ -40,7 +40,7 @@ int main()
 
     size_t size = 0;
 
-    if (getline(&str, &size, stdin) == (size_t) EOF)
+    if (getline(&str, &size, stdin) == 0)
         return -1;
 
     printf("%s", str);

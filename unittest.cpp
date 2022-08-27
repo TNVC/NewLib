@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
+#include "newstdio.h"
 #include "newstring.h"
 #include "unittest.h"
 
@@ -38,12 +40,12 @@ static void showTestResult(unsigned succesful, unsigned failed, const char *func
 /// Set all chars in string to '\\0'
 /// @param [out] str String for zeroing
 /// @param [in] n Length of string
-static void cleanString(char *str, int n);
+static inline void cleanString(char *str, int n);
 
 /// If string equals "0", set all chars in string yo "\\0"
 /// @param [out] str String for zeroing
 /// @param [in] n Length of string
-static void ifZeroStringCleanString(char *str, int n);
+static inline void ifZeroStringCleanString(char *str, int n);
 
 
 void test_newstrchr()
@@ -79,6 +81,8 @@ void test_newstrchr()
             ++failed;
     }
 
+    fclose(fileptr);
+
     showTestResult(succesful, failed, "newstrchr()");
 }
 
@@ -113,6 +117,8 @@ void test_newstrlen()
         else
             ++failed;
     }
+
+    fclose(fileptr);
 
     showTestResult(succesful, failed, "newstrlen()");
 }
@@ -151,6 +157,8 @@ void test_newstrcpy()
         else
             ++failed;
     }
+
+    fclose(fileptr);
 
     showTestResult(succesful, failed, "newstrcpy()");
 }
@@ -195,6 +203,8 @@ void test_newstrncpy()
             ++failed;
     }
 
+    fclose(fileptr);
+
     showTestResult(succesful, failed, "newstrncpy()");
 }
 
@@ -235,6 +245,8 @@ void test_newstrcat()
         else
             ++failed;
     }
+
+    fclose(fileptr);
 
     showTestResult(succesful, failed, "newstrcat()");
 }
@@ -279,6 +291,8 @@ void test_newstrncat()
             ++failed;
     }
 
+    fclose(fileptr);
+
     showTestResult(succesful, failed, "newstrncat()");
 }
 
@@ -316,17 +330,134 @@ void test_newstrdup()
         free(copy);
     }
 
+    fclose(fileptr);
+
     showTestResult(succesful, failed, "newstrdup()");
 }
 
 void test_newputs()
-{}
+{
+    showTestResult(0, 0, "newputs()");
+}
 
 void test_newfgets()
-{}
+{
+    FILE *fileptr    = nullptr,
+         *sourceFile = nullptr;
+
+    fileptr = fopen ("test/fgets.txt"          , "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    sourceFile = fopen ("test/fgets.source.txt", "r");
+
+    if (sourceFile == nullptr)
+    {
+        fclose(fileptr);
+
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
+
+    unsigned succesful = 0,
+             failed    = 0;
+
+    char origin[MAX_TEST_STR_LEN] = "";
+    char copy  [MAX_TEST_STR_LEN] = "";
+
+    int buffLen    = 0;
+    int countReads = 0;
+
+    if (fscanf(fileptr, "%d %d", &buffLen, &countReads) == 2)
+    {
+        while (getc(fileptr) != '\n')
+            continue;
+
+        for (int i = 0; i < countReads; ++i)
+        {
+            ++testCount;
+
+            if (testString(newfgets(copy, buffLen, sourceFile), fgets(origin, buffLen, fileptr), testCount))
+                ++succesful;
+            else
+                ++failed;
+        }
+    }
+
+    fclose(fileptr);
+    fclose(sourceFile);
+
+    showTestResult(succesful, failed, "newfgets()");
+}
 
 void test_newgetline()
-{}
+{
+    FILE *fileptr    = nullptr,
+         *sourceFile = nullptr;
+
+    fileptr    = fopen ("test/getline.txt"       , "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+
+    sourceFile = fopen ("test/getline.source.txt", "r");
+
+    if (sourceFile == nullptr)
+    {
+        fclose(fileptr);
+
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
+
+    unsigned succesful = 0,
+             failed    = 0;
+
+    char origin[MAX_TEST_STR_LEN] = "";
+
+    int len = 0;
+
+    while (fscanf(fileptr, "%d %s", &len, origin) == 2)
+    {
+        ++testCount;
+
+        ifZeroStringCleanString(origin, MAX_TEST_STR_LEN);
+
+        strcat(origin, "\n");
+
+        char *str   = nullptr;
+        size_t size =       0;
+
+        if (testInt((int) newgetline(&str, &size, sourceFile), len, testCount) && testString(str, origin, testCount))
+            ++succesful;
+        else
+            ++failed;
+
+        free(str);
+    }
+
+
+    fclose(fileptr);
+    fclose(sourceFile);
+
+    showTestResult(succesful, failed, "newgetline()");
+}
 
 static int testPointer(const void *real, const void *expected, unsigned numTest)
 {
@@ -377,13 +508,13 @@ static void showTestResult(unsigned succesful, unsigned failed, const char *func
     printf("-----------------------\n");
 }
 
-static void ifZeroStringCleanString(char *str, int n)
+static inline void ifZeroStringCleanString(char *str, int n)
 {
     if (strcmp(str, "0") == 0)
         cleanString(str, n);
 }
 
-static void cleanString(char *str, int n)
+static inline void cleanString(char *str, int n)
 {
     for (int i = 0; i < n; ++i)
         str[i] = '\0';
