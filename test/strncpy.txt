@@ -1,0 +1,4 @@
+---------- qwerty qwerty     11
+-----      qwerty qwert       6
+0          qwerty 0           1
+---------- 0      0          11

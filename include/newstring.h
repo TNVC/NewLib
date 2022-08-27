@@ -5,7 +5,7 @@
 /// @param [in] str Source string
 /// @param [in] ch Char which want to find
 /// @return Pointer to first ch in str or NULL if str hasn`t ch
-char *newstrchr(const char *str, char ch);
+char *newstrchr(const char *str, int ch);
 
 /// Count string length
 /// @param [in] str Source string
@@ -46,6 +46,7 @@ char *newstrncat(char *target, const char *source, int n);
 /// Copy string in heap
 /// @param [in] str Source string
 /// @return Address in heap of copy of source string
+/// @note Don`t forget free() return address
 char *newstrdup(const char *source);
 
 #endif

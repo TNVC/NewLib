@@ -1,0 +1,10 @@
+abcdef a  0
+abcdef b  1
+abcdef c  2
+abcdef d  3
+abcdef e  4
+abcdef f  5
+abcdef 0  6
+abcdef q -1
+abcdef w -1
+abcdef r -1

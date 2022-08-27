@@ -9,7 +9,7 @@
 /// @param [in] expected Expected value of string
 /// @param [in] numTest Number of test
 /// @return expected == real
-static int testStrings(const char *real    ,
+static int testString(const char *real    ,
                        const char *expected, unsigned numTest);
 
 /// Compare two integers
@@ -17,7 +17,7 @@ static int testStrings(const char *real    ,
 /// @param [in] expected Expected value of int
 /// @param [in] numTest Number of test
 /// @return expected == real
-static int testInts(int real    ,
+static int testInt(int real    ,
                     int expected, unsigned numTest);
 
 /// Compare two pointers
@@ -25,7 +25,7 @@ static int testInts(int real    ,
 /// @param [in] expected Expected value of pointer
 /// @param [in] numTest Number of test
 /// @return expected == real
-static int testPointers(const void *real    ,
+static int testPointer(const void *real    ,
                         const void *expected, unsigned numTest);
 
 
@@ -35,55 +35,83 @@ static int testPointers(const void *real    ,
 /// @param [in] funcName Name of testing function
 static void showTestResult(unsigned succesful, unsigned failed, const char *funcName);
 
+/// Set all chars in string to '\\0'
+/// @param [out] str String for zeroing
+/// @param [in] n Length of string
+static void cleanString(char *str, int n);
+
+/// If string equals "0", set all chars in string yo "\\0"
+/// @param [out] str String for zeroing
+/// @param [in] n Length of string
+static void ifZeroStringCleanString(char *str, int n);
+
+
 void test_newstrchr()
 {
-    unsigned numTest = 1;
+    FILE *fileptr = nullptr;
+
+    fileptr = fopen ("test/strchr.txt", "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
 
     unsigned succesful = 0,
              failed    = 0;
 
-    char str[7] = "abcdef";
+    char ch                    = '\0';
+    char str[MAX_TEST_STR_LEN] =   "";
 
-    size_t i = 0;
+    int pos = 0;
 
-    for ( ; i < strlen(str); ++i, ++numTest)
-        if (testPointers(newstrchr(str, (char) ('a' + i)), str + i, numTest))
+    while (fscanf(fileptr, "%s %c %d", str, &ch, &pos) == 3)
+    {
+        ++testCount;
+
+        if (testPointer(newstrchr(str, ch == '0' ? '\0' : ch), pos == -1 ? nullptr : str + pos, testCount))
             ++succesful;
         else
             ++failed;
-
-    for ( ; i < strlen(str) + 3; ++i, ++numTest)
-        if (testPointers(newstrchr(str, (char) ('a' + i)), nullptr, numTest))
-            ++succesful;
-        else
-            ++failed;
-
-    if (testPointers(newstrchr(str, '\0'), str + strlen(str), numTest))
-        ++succesful;
-    else
-        ++failed;
+    }
 
     showTestResult(succesful, failed, "newstrchr()");
 }
 
 void test_newstrlen()
 {
-    unsigned numTest = 1;
+    FILE *fileptr = nullptr;
+
+    fileptr = fopen ("test/strlen.txt", "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
 
     unsigned succesful = 0,
              failed    = 0;
 
-    const int len = 10;
-    char str[len + 1] = "a";
+    char str[MAX_TEST_STR_LEN] = "";
 
-    for (int i = 0; i < len; ++i, ++numTest)
+    int len = 0;
+
+    while (fscanf(fileptr, "%s %d", str, &len) == 2)
     {
-        if (testInts((int) newstrlen(str), i + 1, numTest))
+        ++testCount;
+
+        if (testInt((int) newstrlen(str), len, testCount))
             ++succesful;
         else
             ++failed;
-
-        str[i + 1] = 'a';
     }
 
     showTestResult(succesful, failed, "newstrlen()");
@@ -91,23 +119,37 @@ void test_newstrlen()
 
 void test_newstrcpy()
 {
-    unsigned numTest = 1;
+    FILE *fileptr = nullptr;
+
+    fileptr = fopen ("test/strcpy.txt", "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
 
     unsigned succesful = 0,
              failed    = 0;
 
-    const int len = 10;
-    char origin[len + 1] = "a";
-    char copy[len + 1] = "";
+    char origin[MAX_TEST_STR_LEN] = "";
+    char   copy[MAX_TEST_STR_LEN] = "";
 
-    for (int i = 0; i < len; ++i, ++numTest)
+    while (fscanf(fileptr, "%s %s", copy, origin) == 2)
     {
-        if (testStrings(newstrcpy(copy, origin), origin, numTest))
+        ++testCount;
+
+        ifZeroStringCleanString(origin, MAX_TEST_STR_LEN);
+
+        ifZeroStringCleanString(copy  , MAX_TEST_STR_LEN);
+
+        if (testString(newstrcpy(copy, origin), origin, testCount))
             ++succesful;
         else
             ++failed;
-
-        origin[i + 1] = (char) ('a' + i);
     }
 
     showTestResult(succesful, failed, "newstrcpy()");
@@ -115,55 +157,178 @@ void test_newstrcpy()
 
 void test_newstrncpy()
 {
-    unsigned numTest = 1;
+    FILE *fileptr = nullptr;
+
+    fileptr = fopen ("test/strncpy.txt", "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
 
     unsigned succesful = 0,
              failed    = 0;
 
-    const int len = 5;
-    char origin[len + 1] = "a";
-    char copy[len + 1] = "";
+    char origin[MAX_TEST_STR_LEN] = "";
+    char   copy[MAX_TEST_STR_LEN] = "";
+    char result[MAX_TEST_STR_LEN] = "";
 
-    for (int i = 0; i < len; ++i, ++numTest)
+    int len = 0;
+
+    while (fscanf(fileptr, "%s %s %s %d", copy, origin, result, &len) == 4)
     {
-        if (testStrings(newstrncpy(copy, origin, i + 2), origin, numTest))
+        ++testCount;
+
+        ifZeroStringCleanString(origin, MAX_TEST_STR_LEN);
+
+        ifZeroStringCleanString(copy  , MAX_TEST_STR_LEN);
+
+        ifZeroStringCleanString(result, MAX_TEST_STR_LEN);
+
+        if (testString(newstrncpy(copy, origin, len), result, testCount))
             ++succesful;
         else
             ++failed;
-
-        origin[i + 1] = (char) ('a' + i);
     }
-
-    if (testStrings(newstrncpy(copy, "1234567890", len + 1), "12345", numTest++))
-            ++succesful;
-        else
-            ++failed;
 
     showTestResult(succesful, failed, "newstrncpy()");
 }
 
 void test_newstrcat()
 {
-    unsigned numTest = 1;
+    FILE *fileptr = nullptr;
+
+    fileptr = fopen ("test/strcat.txt", "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
 
     unsigned succesful = 0,
              failed    = 0;
 
-    char source[10] = "qwerty";
-    char target[10] = "str";
+    char origin[MAX_TEST_STR_LEN] = "";
+    char adding[MAX_TEST_STR_LEN] = "";
+    char result[MAX_TEST_STR_LEN] = "";
 
+    while (fscanf(fileptr, "%s %s %s", origin, adding, result) == 3)
+    {
+        ++testCount;
 
+        ifZeroStringCleanString(origin, MAX_TEST_STR_LEN);
+
+        ifZeroStringCleanString(adding, MAX_TEST_STR_LEN);
+
+        ifZeroStringCleanString(result, MAX_TEST_STR_LEN);
+
+        if (testString(newstrcat(origin, adding), result, testCount))
+            ++succesful;
+        else
+            ++failed;
+    }
 
     showTestResult(succesful, failed, "newstrcat()");
 }
 
 void test_newstrncat()
-{}
+{
+    FILE *fileptr = nullptr;
+
+    fileptr = fopen ("test/strncat.txt", "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
+
+    unsigned succesful = 0,
+             failed    = 0;
+
+    char origin[MAX_TEST_STR_LEN] = "";
+    char adding[MAX_TEST_STR_LEN] = "";
+    char result[MAX_TEST_STR_LEN] = "";
+
+    int len = 0;
+
+    while (fscanf(fileptr, "%s %s %s %d", origin, adding, result, &len) == 4)
+    {
+        ++testCount;
+
+        ifZeroStringCleanString(origin, MAX_TEST_STR_LEN);
+
+        ifZeroStringCleanString(adding, MAX_TEST_STR_LEN);
+
+        ifZeroStringCleanString(result, MAX_TEST_STR_LEN);
+
+        if (testString(newstrncat(origin, adding, len), result, testCount))
+            ++succesful;
+        else
+            ++failed;
+    }
+
+    showTestResult(succesful, failed, "newstrncat()");
+}
 
 void test_newstrdup()
+{
+    FILE *fileptr = nullptr;
+
+    fileptr = fopen ("test/strdup.txt", "r");
+
+    if (fileptr == nullptr)
+    {
+        printf("Hasn`t test for %s()", __func__);
+
+        return;
+    }
+
+    unsigned testCount = 0;
+
+    unsigned succesful = 0,
+             failed    = 0;
+
+    char str[MAX_TEST_STR_LEN] = "";
+
+    while (fscanf(fileptr, "%s", str) == 1)
+    {
+        ++testCount;
+
+        char *copy = strdup(str);
+
+        if (testString(copy, str, testCount))
+            ++succesful;
+        else
+            ++failed;
+
+        free(copy);
+    }
+
+    showTestResult(succesful, failed, "newstrdup()");
+}
+
+void test_newputs()
 {}
 
-static int testPointers(const void *real, const void *expected, unsigned numTest)
+void test_newfgets()
+{}
+
+void test_newgetline()
+{}
+
+static int testPointer(const void *real, const void *expected, unsigned numTest)
 {
     if (!(expected == real))
     {
@@ -177,7 +342,7 @@ static int testPointers(const void *real, const void *expected, unsigned numTest
     return 1;
 }
 
-static int testInts(int real, int expected, unsigned numTest)
+static int testInt(int real, int expected, unsigned numTest)
 {
     if (!(expected == real))
     {
@@ -191,7 +356,7 @@ static int testInts(int real, int expected, unsigned numTest)
     return 1;
 }
 
-static int testStrings(const char *real, const char *expected, unsigned numTest)
+static int testString(const char *real, const char *expected, unsigned numTest)
 {
     if (!(strcmp(expected, real) == 0))
     {
@@ -210,4 +375,16 @@ static void showTestResult(unsigned succesful, unsigned failed, const char *func
     printf("-----------------------\n");
     printf("# %s:\n# Total succesful: %4d\n# Total failed   : %4d\n",funcName, succesful, failed);
     printf("-----------------------\n");
+}
+
+static void ifZeroStringCleanString(char *str, int n)
+{
+    if (strcmp(str, "0") == 0)
+        cleanString(str, n);
+}
+
+static void cleanString(char *str, int n)
+{
+    for (int i = 0; i < n; ++i)
+        str[i] = '\0';
 }

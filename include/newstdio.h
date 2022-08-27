@@ -16,4 +16,16 @@ int newputs(const char *str);
 /// @return Address of str or NULL if was read`s error
 char *newfgets(char *str, int n, FILE *stream);
 
+/// Read chars while meat '\\n'
+/// @details Function allocates memory in heap for string itself
+/// and if need automatic resize (and if need reallocates) string in heap
+///
+/// @param [out] strPointer Pointer to read string
+/// @param [out] n Pointer to length of read string
+/// @param [in] stream Chars input stream
+/// @return Size of read string or EOF if was error
+/// @note Read '\\0' too
+/// @note Don`t forget free() return address
+size_t newgetline(char **strPointer, size_t *n, FILE *stream);
+
 #endif

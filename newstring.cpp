@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "newstring.h"
 
-char *newstrchr(const char *str, char ch)
+char *newstrchr(const char *str, int ch)
 {
     assert(str != nullptr);
 
@@ -83,7 +83,6 @@ char *newstrncat(char *target, const char *source, int n)
 {
     assert(target != nullptr);
     assert(source != nullptr);
-    assert(n > 0);
 
     int i = -1;
     while (target[++i])

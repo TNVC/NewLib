@@ -1,0 +1,9 @@
+0      string string
+s      tring  string
+st     ring   string
+str    ing    string
+stri   ng     string
+strin  g      string
+string 0      string
+0      0      0
+string string stringstring
