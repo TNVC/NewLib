@@ -21,7 +21,6 @@ char *newfgets(char *str, int n, FILE *stream)
 {
     assert(str    != nullptr);
     assert(stream != nullptr);
-    assert(n > 0);
 
     int ch = 0;
     int  i = 0;
@@ -29,7 +28,11 @@ char *newfgets(char *str, int n, FILE *stream)
     for ( ; ch != '\n' && i < n - 1; ++i)
     {
         if((ch = getc(stream)) == EOF)
+        {
+            str[i] = '\0';
+
             return nullptr;
+        }
 
         str[i] = (char) ch;
     }
@@ -45,8 +48,8 @@ size_t newgetline(char **strPointer, size_t *n, FILE *stream)
     assert(n          != nullptr);
     assert(stream     != nullptr);
 
-    size_t size = 10;
-    *strPointer = (char *) malloc(size);
+    size_t size = 16;
+    *strPointer = (char *) calloc(size, sizeof(char));
 
     int ch = 0;
 
@@ -54,9 +57,16 @@ size_t newgetline(char **strPointer, size_t *n, FILE *stream)
     {
         if (*n >= size)
         {
-            size = size*2 + 1;
+            size *= 2;
 
             *strPointer = (char *) realloc(*strPointer, size);
+
+            if (*strPointer == nullptr)
+            {
+                *n = 0;
+
+                return (size_t) EOF;
+            }
         }
 
         ch = getc(stream);
@@ -67,7 +77,14 @@ size_t newgetline(char **strPointer, size_t *n, FILE *stream)
 
             *strPointer = (char *) realloc(*strPointer, *n);
 
-            return 0;
+            if (*strPointer == nullptr)
+            {
+                *n = 0;
+
+                return (size_t) EOF;
+            }
+
+            return (size_t) EOF;
         }
 
         (*strPointer)[*n] = (char) ch;
@@ -76,6 +93,13 @@ size_t newgetline(char **strPointer, size_t *n, FILE *stream)
     (*strPointer)[(*n)++] = '\0';
 
     *strPointer = (char *) realloc(*strPointer, *n);
+
+    if (*strPointer == nullptr)
+    {
+        *n = 0;
+
+        return (size_t) EOF;
+    }
 
     return *n;
 }

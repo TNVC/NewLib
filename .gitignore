@@ -2,4 +2,4 @@
 *.o
 *.save
 Makefile
-.doxygen/
+doxygen/

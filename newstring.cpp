@@ -1,10 +1,12 @@
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "newstring.h"
 
 char *newstrchr(const char *str, int ch)
 {
     assert(str != nullptr);
+    assert(ch  != EOF);
 
     const char *currentCh = str;
 
@@ -103,7 +105,7 @@ char *newstrdup(const char *source)
 
     size_t len = newstrlen(source);
 
-    char *target = (char *) malloc(len + 1);
+    char *target = (char *) calloc(len + 1, sizeof(char));
 
     if (target == nullptr)
         return nullptr;

@@ -6,13 +6,20 @@
 #include "newstring.h"
 #include "unittest.h"
 
+#define NO_TESTS                                            \
+        {                                                   \
+            printf("Hasn`t test for %s()\n", __func__);     \
+                                                            \
+            return;                                         \
+        }
+
 /// Compare two strings
 /// @param [in] real Real value of string
 /// @param [in] expected Expected value of string
 /// @param [in] numTest Number of test
 /// @return expected == real
 static int testString(const char *real    ,
-                       const char *expected, unsigned numTest);
+                      const char *expected, unsigned numTest);
 
 /// Compare two integers
 /// @param [in] real Real value of int
@@ -20,7 +27,7 @@ static int testString(const char *real    ,
 /// @param [in] numTest Number of test
 /// @return expected == real
 static int testInt(int real    ,
-                    int expected, unsigned numTest);
+                   int expected, unsigned numTest);
 
 /// Compare two pointers
 /// @param [in] real Real value of pointer
@@ -28,8 +35,7 @@ static int testInt(int real    ,
 /// @param [in] numTest Number of test
 /// @return expected == real
 static int testPointer(const void *real    ,
-                        const void *expected, unsigned numTest);
-
+                       const void *expected, unsigned numTest);
 
 /// Show test result
 /// @param [in] succesful Count of succesful tests
@@ -40,9 +46,9 @@ static void showTestResult(unsigned succesful, unsigned failed, const char *func
 /// Set all chars in string to '\\0'
 /// @param [out] str String for zeroing
 /// @param [in] n Length of string
-static inline void cleanString(char *str, int n);
+static void cleanString(char *str, int n);
 
-/// If string equals "0", set all chars in string yo "\\0"
+/// If string equals "0", set all chars in string to "\\0"
 /// @param [out] str String for zeroing
 /// @param [in] n Length of string
 static inline void ifZeroStringCleanString(char *str, int n);
@@ -55,11 +61,7 @@ void test_newstrchr()
     fileptr = fopen ("test/strchr.txt", "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     unsigned testCount = 0;
 
@@ -93,11 +95,7 @@ void test_newstrlen()
     fileptr = fopen ("test/strlen.txt", "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     unsigned testCount = 0;
 
@@ -130,11 +128,7 @@ void test_newstrcpy()
     fileptr = fopen ("test/strcpy.txt", "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     unsigned testCount = 0;
 
@@ -170,11 +164,7 @@ void test_newstrncpy()
     fileptr = fopen ("test/strncpy.txt", "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     unsigned testCount = 0;
 
@@ -215,11 +205,7 @@ void test_newstrcat()
     fileptr = fopen ("test/strcat.txt", "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     unsigned testCount = 0;
 
@@ -258,11 +244,7 @@ void test_newstrncat()
     fileptr = fopen ("test/strncat.txt", "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     unsigned testCount = 0;
 
@@ -303,11 +285,7 @@ void test_newstrdup()
     fileptr = fopen ("test/strdup.txt", "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     unsigned testCount = 0;
 
@@ -337,7 +315,7 @@ void test_newstrdup()
 
 void test_newputs()
 {
-    showTestResult(0, 0, "newputs()");
+    NO_TESTS;
 }
 
 void test_newfgets()
@@ -348,11 +326,7 @@ void test_newfgets()
     fileptr = fopen ("test/fgets.txt"          , "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
     sourceFile = fopen ("test/fgets.source.txt", "r");
 
@@ -360,9 +334,7 @@ void test_newfgets()
     {
         fclose(fileptr);
 
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
+        NO_TESTS;
     }
 
     unsigned testCount = 0;
@@ -406,11 +378,7 @@ void test_newgetline()
     fileptr    = fopen ("test/getline.txt"       , "r");
 
     if (fileptr == nullptr)
-    {
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
-    }
+        NO_TESTS;
 
 
     sourceFile = fopen ("test/getline.source.txt", "r");
@@ -419,9 +387,7 @@ void test_newgetline()
     {
         fclose(fileptr);
 
-        printf("Hasn`t test for %s()", __func__);
-
-        return;
+        NO_TESTS;
     }
 
     unsigned testCount = 0;
@@ -451,7 +417,6 @@ void test_newgetline()
 
         free(str);
     }
-
 
     fclose(fileptr);
     fclose(sourceFile);
@@ -514,7 +479,7 @@ static inline void ifZeroStringCleanString(char *str, int n)
         cleanString(str, n);
 }
 
-static inline void cleanString(char *str, int n)
+static void cleanString(char *str, int n)
 {
     for (int i = 0; i < n; ++i)
         str[i] = '\0';

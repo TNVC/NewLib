@@ -31,21 +31,20 @@ int main()
 
     #else
 
-    for (int i = 0; i < 1; ++i)
-        putc('\0', fp);
-
-    return 0;
-
     char *str = nullptr;
 
     size_t size = 0;
 
-    if (getline(&str, &size, stdin) == 0)
-        return -1;
+    puts("Input a string:");
+
+    if (newgetline(&str, &size, stdin) == 0)
+        return 0;
 
     printf("%s", str);
 
     free(str);
+
+    puts("Goodbye");
 
     #endif
 

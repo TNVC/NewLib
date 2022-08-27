@@ -1,6 +1,7 @@
 #ifndef UNITTEST_H_
 #define UNITTEST_H_
 
+/// Max length of string in test files
 static const int MAX_TEST_STR_LEN = 63;
 
 /// Test function "newstrchr()"
@@ -25,6 +26,7 @@ void test_newstrncat();
 void test_newstrdup();
 
 /// Test function "newputs()"
+/// @note There is no test
 void test_newputs();
 
 /// Test function "newfgets()"
